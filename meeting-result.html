@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마케팅팀 주간회의 - 회의 결과</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: rgba(255, 255, 255, 0.7);
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-tertiary: #999999;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-bg: linear-gradient(135deg, #f5f7ff 0%, #faf8ff 50%, #f0f4ff 100%);
+        }
+
+        html.dark {
+            --bg-primary: #0f0f23;
+            --bg-secondary: rgba(20, 20, 40, 0.8);
+            --bg-tertiary: rgba(255, 255, 255, 0.05);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #808080;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --gradient-bg: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #16213e 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--gradient-bg);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            padding: 30px 20px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        .header-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-md);
+            transform: scale(1.05);
+        }
+
+        .print-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .print-btn:hover {
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-md);
+            transform: scale(1.05);
+        }
+
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            max-width: 900px;
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 0;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 16px 20px;
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-item:last-child {
+            border-right: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom-color: #667eea;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .nav-item {
+                flex: 1;
+                padding: 12px 12px;
+                border-right: none;
+                border-radius: 8px;
+                border-bottom: none;
+                font-size: 12px;
+                background: var(--bg-secondary);
+            }
+
+            .nav-item.active {
+                background: var(--gradient-primary);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card {
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-bottom: 30px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 30px 0;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '▸';
+            color: var(--gradient-primary);
+            font-size: 24px;
+        }
+
+        /* 기본 정보 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* 논의 내용 */
+        .summary-box {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 액션 아이템 테이블 */
+        .action-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .action-table th {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            padding: 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .action-table th:nth-child(1) { width: 15%; }
+        .action-table th:nth-child(2) { width: 50%; }
+        .action-table th:nth-child(3) { width: 20%; }
+
+        .action-table td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .action-table tr:hover td {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .action-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .owner {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .deadline {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* 인쇄 스타일 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .header-bar {
+                display: none;
+            }
+
+            .back-link {
+                display: none;
+            }
+
+            .card {
+                background: white;
+                backdrop-filter: none;
+                border: 1px solid #ddd;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            .info-grid {
+                background: #f8f9fa;
+                border: 1px solid #ddd;
+                backdrop-filter: none;
+            }
+
+            .summary-box {
+                background: #f8f9fa;
+                border: 1px solid #ddd;
+                backdrop-filter: none;
+            }
+
+            .action-table th,
+            .action-table td {
+                border: 1px solid #ddd;
+            }
+
+            .title {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-table {
+                font-size: 12px;
+            }
+
+            .action-table th,
+            .action-table td {
+                padding: 10px;
+            }
+
+            .action-table th:nth-child(1) { width: 18%; }
+            .action-table th:nth-child(2) { width: 50%; }
+            .action-table th:nth-child(3) { width: 20%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <button class="print-btn" id="printBtn" title="인쇄">🖨️</button>
+        <button class="theme-toggle" id="themeToggle" title="테마 변경">☀️</button>
+    </div>
+
+    <!-- 네비게이션 메뉴 -->
+    <div class="nav-menu" id="navMenu">
+        <a href="dashboard.html" class="nav-item" data-page="dashboard.html">📊 대시보드</a>
+        <a href="meeting-result.html" class="nav-item active" data-page="meeting-result.html">📋 회의록</a>
+        <a href="chart.html" class="nav-item" data-page="chart.html">📈 매출 현황</a>
+        <a href="process.html" class="nav-item" data-page="process.html">🔄 업무 프로세스</a>
+        <a href="report.html" class="nav-item" data-page="report.html">📑 사이트 분석</a>
+    </div>
+
+    <div class="container">
+        <a href="dashboard.html" class="back-link">← 대시보드로</a>
+
+        <div class="card">
+            <h1 class="title">마케팅팀 주간회의</h1>
+            <p class="subtitle">회의 결과 및 액션 아이템</p>
+
+            <!-- 회의 기본 정보 -->
+            <div class="section">
+                <h2 class="section-title">회의 정보</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">회의 일시</div>
+                        <div class="info-value">2026년 3월 10일 (월)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">회의실</div>
+                        <div class="info-value">마케팅팀 회의실</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">참석자</div>
+                        <div class="info-value">김대리, 이과장, 박사원, 정팀장</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">회의 유형</div>
+                        <div class="info-value">정기 주간회의</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 논의 내용 요약 -->
+            <div class="section">
+                <h2 class="section-title">논의 내용 요약</h2>
+                <div class="summary-box">
+                    <p><strong>주요 성과:</strong> SNS 광고 캠페인 A/B 테스트 결과에서 B안(영상형)이 A안(이미지형) 대비 클릭률 2.3배 높은 성과를 기록. 블로그 콘텐츠 3건 발행 및 인플루언서 협업 제안서 3곳 발송 완료.</p>
+                    <br>
+                    <p><strong>주요 결정:</strong> 성공한 B안 기반으로 영상 광고 3개를 추가 제작하기로 결정. 4월 신제품 런칭 캠페인 준비를 위해 3월 넷째 주부터 사전 티저 콘텐츠 시작하기로 확정. 영상 제작비 추가 200만원 예산 조정 필요.</p>
+                    <br>
+                    <p><strong>다음 회의:</strong> 2026년 3월 17일 (월) 오전 10시 예정.</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 액션 아이템 -->
+            <div class="section">
+                <h2 class="section-title">액션 아이템</h2>
+                <table class="action-table">
+                    <thead>
+                        <tr>
+                            <th>담당자</th>
+                            <th>할 일</th>
+                            <th>기한</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="owner">박사원</td>
+                            <td>B안 기반으로 영상 광고 3개 추가 제작</td>
+                            <td class="deadline">2026-03-14</td>
+                        </tr>
+                        <tr>
+                            <td class="owner">이과장</td>
+                            <td>인플루언서 미팅 일정 잡기</td>
+                            <td class="deadline">2026-03-14</td>
+                        </tr>
+                        <tr>
+                            <td class="owner">김대리</td>
+                            <td>3월 프로모션 기획안 초안 작성</td>
+                            <td class="deadline">2026-03-12</td>
+                        </tr>
+                        <tr>
+                            <td class="owner">박사원</td>
+                            <td>경쟁사 C사 신규 캠페인 분석</td>
+                            <td>2026-03-16</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 비고 -->
+            <div class="section">
+                <h2 class="section-title">주요 일정</h2>
+                <div class="summary-box">
+                    <p><strong>3월 프로모션:</strong> 봄맞이 할인 이벤트, 3/20~3/31 진행 예정</p>
+                    <br>
+                    <p><strong>신제품 런칭:</strong> 4월 첫째 주 목표, 3월 넷째 주부터 사전 티저 시작</p>
+                    <br>
+                    <p><strong>영상 광고:</strong> B안(영상형) 기반 3개 추가 제작</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>이 문서는 2026년 3월 10일 회의를 기반으로 작성되었습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 다크 모드 토글
+        const themeToggle = document.getElementById('themeToggle');
+        const printBtn = document.getElementById('printBtn');
+        const html = document.documentElement;
+
+        // 저장된 테마 복원
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', savedTheme === 'dark');
+        updateThemeToggle();
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeToggle();
+        });
+
+        function updateThemeToggle() {
+            const isDark = html.classList.contains('dark');
+            themeToggle.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        // 인쇄 기능
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // 네비게이션 메뉴 활성화
+        function activateNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'meeting-result.html';
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('data-page');
+                if (itemPage === currentPage || (currentPage === '' && itemPage === 'meeting-result.html')) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('load', activateNavItem);
+        document.addEventListener('DOMContentLoaded', activateNavItem);
+    </script>
+</body>
+</html>

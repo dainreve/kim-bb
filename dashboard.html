@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김비서 대시보드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: rgba(255, 255, 255, 0.7);
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-tertiary: #999999;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-bg: linear-gradient(135deg, #f5f7ff 0%, #faf8ff 50%, #f0f4ff 100%);
+        }
+
+        html.dark {
+            --bg-primary: #0f0f23;
+            --bg-secondary: rgba(20, 20, 40, 0.8);
+            --bg-tertiary: rgba(255, 255, 255, 0.05);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #808080;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --gradient-bg: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #16213e 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--gradient-bg);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            padding: 30px 20px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        .header-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-md);
+            transform: scale(1.05);
+        }
+
+        .header {
+            max-width: 1400px;
+            margin: 0 auto 40px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+
+        .header a:hover {
+            background: var(--bg-secondary);
+            box-shadow: var(--shadow-sm);
+            transform: translateX(-2px);
+        }
+
+        .header-spacer {
+            flex: 1;
+        }
+
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 0;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 16px 20px;
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-item:last-child {
+            border-right: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom-color: #667eea;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .nav-item {
+                flex: 1;
+                padding: 12px 12px;
+                border-right: none;
+                border-radius: 8px;
+                border-bottom: none;
+                font-size: 12px;
+                background: var(--bg-secondary);
+            }
+
+            .nav-item.active {
+                background: var(--gradient-primary);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .section {
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            backdrop-filter: blur(25px);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 할 일 목록 */
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border-left: 4px solid #ddd;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .todo-item:hover {
+            background: rgba(102, 126, 234, 0.08);
+            transform: translateX(4px);
+        }
+
+        .todo-item.high {
+            border-left-color: #ef4444;
+        }
+
+        .todo-item.medium {
+            border-left-color: #f97316;
+        }
+
+        .todo-item.low {
+            border-left-color: #22c55e;
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .todo-content {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .todo-content .task-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .todo-content .task-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* 주간 일정 */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 13px;
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .schedule-table td {
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .schedule-table tr:hover td {
+            background: rgba(102, 126, 234, 0.08);
+        }
+
+        .schedule-table td:first-child {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* 프로젝트 진행률 */
+        .project-list {
+            list-style: none;
+        }
+
+        .project-item {
+            margin-bottom: 22px;
+            padding: 18px;
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .project-item:hover {
+            background: rgba(102, 126, 234, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateX(4px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .project-percentage {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 매출 요약 */
+        .sales-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .sales-card {
+            background: var(--bg-tertiary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sales-card:hover {
+            background: rgba(102, 126, 234, 0.08);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .sales-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .sales-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .sales-unit {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sales-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .section {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .sales-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sales-value {
+                font-size: 28px;
+            }
+
+            .header {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .header a {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <button class="theme-toggle" id="themeToggle" title="테마 변경">☀️</button>
+    </div>
+
+    <div class="header">
+        <a href="index.html">← 메인</a>
+        <div class="header-spacer"></div>
+    </div>
+
+    <!-- 네비게이션 메뉴 -->
+    <div class="nav-menu" id="navMenu">
+        <a href="dashboard.html" class="nav-item active" data-page="dashboard.html">📊 대시보드</a>
+        <a href="meeting-result.html" class="nav-item" data-page="meeting-result.html">📋 회의록</a>
+        <a href="chart.html" class="nav-item" data-page="chart.html">📈 매출 현황</a>
+        <a href="process.html" class="nav-item" data-page="process.html">🔄 업무 프로세스</a>
+        <a href="report.html" class="nav-item" data-page="report.html">📑 사이트 분석</a>
+    </div>
+
+    <div class="dashboard">
+        <!-- 섹션 1: 할 일 목록 -->
+        <div class="section">
+            <h2 class="section-title">📋 할 일 목록</h2>
+            <ul class="todo-list" id="todoList"></ul>
+        </div>
+
+        <!-- 섹션 2: 이번 주 일정 -->
+        <div class="section">
+            <h2 class="section-title">📅 이번 주 일정</h2>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>요일</th>
+                        <th>일정</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody"></tbody>
+            </table>
+        </div>
+
+        <!-- 섹션 3: 프로젝트 진행률 -->
+        <div class="section">
+            <h2 class="section-title">📊 프로젝트 진행률</h2>
+            <ul class="project-list" id="projectList"></ul>
+        </div>
+
+        <!-- 섹션 4: 매출 요약 -->
+        <div class="section">
+            <h2 class="section-title">💰 매출 요약</h2>
+            <div class="sales-grid" id="salesGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        // 다크 모드 토글
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // 저장된 테마 복원
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', savedTheme === 'dark');
+        updateThemeToggle();
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeToggle();
+        });
+
+        function updateThemeToggle() {
+            const isDark = html.classList.contains('dark');
+            themeToggle.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        // 데이터 로드 및 렌더링
+        async function loadData() {
+            try {
+                const todoData = [
+                    { 업무: '3월 프로모션 기획안 작성', 우선순위: '높음', 상태: '진행중', 마감일: '2026-03-12' },
+                    { 업무: '인플루언서 미팅 일정 잡기', 우선순위: '높음', 상태: '대기', 마감일: '2026-03-14' },
+                    { 업무: '영상 광고 3개 추가 제작', 우선순위: '보통', 상태: '진행중', 마감일: '2026-03-14' },
+                    { 업무: '경쟁사 C사 캠페인 분석', 우선순위: '보통', 상태: '대기', 마감일: '2026-03-16' },
+                    { 업무: '4월 신제품 티저 콘텐츠 기획', 우선순위: '높음', 상태: '대기', 마감일: '2026-03-21' },
+                    { 업무: 'SNS 계정 주간 콘텐츠 업로드', 우선순위: '보통', 상태: '완료', 마감일: '2026-03-10' },
+                    { 업무: '블로그 포스트 2건 작성', 우선순위: '낮음', 상태: '대기', 마감일: '2026-03-18' },
+                    { 업무: '고객 설문조사 결과 분석', 우선순위: '보통', 상태: '진행중', 마감일: '2026-03-13' },
+                    { 업무: '파트너사 계약서 검토', 우선순위: '높음', 상태: '대기', 마감일: '2026-03-11' },
+                    { 업무: '월간 마케팅 보고서 작성', 우선순위: '높음', 상태: '대기', 마감일: '2026-03-31' },
+                    { 업무: '워크숍 후기 작성하기', 우선순위: '높음', 상태: '대기', 마감일: '2026-05-15' }
+                ];
+
+                const scheduleData = {
+                    '월': ['10:00 마케팅팀 주간회의', '14:00 신제품 런칭 킥오프 미팅'],
+                    '화': ['09:00 3월 프로모션 기획안 마감', '11:00 디자인팀 협업 미팅', '15:00 파트너사 계약서 검토', '19:00 클로드 코드 워크숍 참석'],
+                    '수': ['10:00 인플루언서 미팅', '14:00 고객 설문 결과 공유 미팅', '16:00 콘텐츠 편집 회의'],
+                    '목': ['09:30 영상 광고 촬영 (스튜디오)', '13:00 점심 미팅 — 광고 대행사', '15:00 SNS 콘텐츠 리뷰'],
+                    '금': ['10:00 유튜브 채널 리뉴얼 최종 검토', '14:00 주간 성과 리뷰', '16:00 다음 주 콘텐츠 캘린더 확정']
+                };
+
+                const projectData = [
+                    { 프로젝트명: '봄맞이 프로모션', 진행률: 65 },
+                    { 프로젝트명: '신제품 런칭 캠페인', 진행률: 20 },
+                    { 프로젝트명: '인플루언서 협업', 진행률: 35 },
+                    { 프로젝트명: '유튜브 채널 리뉴얼', 진행률: 80 },
+                    { 프로젝트명: '고객 리텐션 프로그램', 진행률: 10 },
+                    { 프로젝트명: '홈페이지 리뉴얼', 진행률: 45 }
+                ];
+
+                const salesData = [
+                    { 날짜: '2026-01-05', 매출액: 4005000 },
+                    { 날짜: '2026-01-05', 매출액: 1120000 },
+                    { 날짜: '2026-01-05', 매출액: 1950000 },
+                    { 날짜: '2026-01-08', 매출액: 4628000 },
+                    { 날짜: '2026-01-08', 매출액: 2160000 },
+                    { 날짜: '2026-01-08', 매출액: 1625000 },
+                    { 날짜: '2026-01-12', 매출액: 1435000 },
+                    { 날짜: '2026-01-12', 매출액: 1305000 },
+                    { 날짜: '2026-01-12', 매출액: 1395000 },
+                    { 날짜: '2026-01-15', 매출액: 3382000 },
+                    { 날짜: '2026-01-15', 매출액: 2640000 },
+                    { 날짜: '2026-01-15', 매출액: 2100000 },
+                    { 날짜: '2026-01-19', 매출액: 1925000 },
+                    { 날짜: '2026-01-19', 매출액: 1650000 },
+                    { 날짜: '2026-01-19', 매출액: 1485000 },
+                    { 날짜: '2026-01-22', 매출액: 5429000 },
+                    { 날짜: '2026-01-22', 매출액: 1800000 },
+                    { 날짜: '2026-01-22', 매출액: 1800000 },
+                    { 날짜: '2026-01-26', 매출액: 1680000 },
+                    { 날짜: '2026-01-26', 매출액: 1320000 },
+                    { 날짜: '2026-01-26', 매출액: 1665000 },
+                    { 날짜: '2026-02-01', 매출액: 6230000 },
+                    { 날짜: '2026-02-01', 매출액: 2375000 },
+                    { 날짜: '2026-02-01', 매출액: 1505000 },
+                    { 날짜: '2026-02-05', 매출액: 3000000 },
+                    { 날짜: '2026-02-05', 매출액: 1800000 },
+                    { 날짜: '2026-02-05', 매출액: 1395000 },
+                    { 날짜: '2026-02-10', 매출액: 5162000 },
+                    { 날짜: '2026-02-10', 매출액: 1675000 },
+                    { 날짜: '2026-02-10', 매출액: 1365000 }
+                ];
+
+                // 1. 할 일 목록 렌더링
+                const todoList = document.getElementById('todoList');
+                todoData.forEach(item => {
+                    const li = document.createElement('li');
+                    const priorityClass = item.우선순위 === '높음' ? 'high' : item.우선순위 === '보통' ? 'medium' : 'low';
+                    li.className = `todo-item ${priorityClass}`;
+                    li.innerHTML = `
+                        <input type="checkbox" class="todo-checkbox" ${item.상태 === '완료' ? 'checked' : ''}>
+                        <div class="todo-content">
+                            <div class="task-name">${item.업무}</div>
+                            <div class="task-meta">마감: ${item.마감일}</div>
+                        </div>
+                    `;
+                    todoList.appendChild(li);
+                });
+
+                // 2. 주간 일정 렌더링
+                const scheduleBody = document.getElementById('scheduleBody');
+                Object.entries(scheduleData).forEach(([day, schedules]) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${day}요일</td>
+                        <td>${schedules.join('<br>')}</td>
+                    `;
+                    scheduleBody.appendChild(tr);
+                });
+
+                // 3. 프로젝트 진행률 렌더링
+                const projectList = document.getElementById('projectList');
+                projectData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'project-item';
+                    li.innerHTML = `
+                        <div class="project-header">
+                            <span class="project-name">${item.프로젝트명}</span>
+                            <span class="project-percentage">${item.진행률}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${item.진행률}%"></div>
+                        </div>
+                    `;
+                    projectList.appendChild(li);
+                });
+
+                // 4. 매출 요약 렌더링
+                const totalSales = salesData.reduce((sum, item) => sum + item.매출액, 0);
+                const avgSales = Math.round(totalSales / salesData.length);
+                const maxSales = Math.max(...salesData.map(item => item.매출액));
+                const transactionCount = salesData.length;
+
+                const salesGrid = document.getElementById('salesGrid');
+                const salesCards = [
+                    { label: '총 매출', value: Math.round(totalSales / 1000000 * 10) / 10, unit: '백만 원' },
+                    { label: '평균 거래액', value: Math.round(avgSales / 100000) / 10, unit: '십만 원' },
+                    { label: '최대 거래액', value: Math.round(maxSales / 100000) / 10, unit: '십만 원' },
+                    { label: '거래 건수', value: transactionCount, unit: '건' }
+                ];
+
+                salesCards.forEach(card => {
+                    const div = document.createElement('div');
+                    div.className = 'sales-card';
+                    div.innerHTML = `
+                        <div class="sales-label">${card.label}</div>
+                        <div class="sales-value">${card.value}</div>
+                        <div class="sales-unit">${card.unit}</div>
+                    `;
+                    salesGrid.appendChild(div);
+                });
+
+            } catch (error) {
+                console.error('데이터 로드 에러:', error);
+            }
+        }
+
+        // 페이지 로드시 데이터 로드
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        // 네비게이션 메뉴 활성화
+        function activateNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('data-page');
+                if (currentPage === '' || currentPage === '/' || currentPage === 'dashboard.html') {
+                    if (itemPage === 'dashboard.html') {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                } else if (itemPage === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // 페이지 로드 시 활성화
+        window.addEventListener('load', activateNavItem);
+        document.addEventListener('DOMContentLoaded', activateNavItem);
+    </script>
+</body>
+</html>

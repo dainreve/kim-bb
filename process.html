@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업무 프로세스 - 컨텐츠 마케팅</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            transition: background 0.3s ease;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        body.light-mode .header h1 {
+            color: #333;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            gap: 0;
+        }
+
+        body.light-mode .nav-menu {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 16px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        body.light-mode .nav-item {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .nav-item:hover {
+            color: white;
+        }
+
+        body.light-mode .nav-item:hover {
+            color: #333;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-color: #667eea;
+        }
+
+        body.light-mode .nav-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-color: #667eea;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        body.light-mode .content {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        body.light-mode .content h2 {
+            color: #333;
+        }
+
+        .process-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 180px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .process-step.step1 {
+            background: linear-gradient(135deg, #FFB6D9 0%, #FFA0D2 100%);
+            color: #333;
+        }
+
+        .process-step.step2 {
+            background: linear-gradient(135deg, #B3D9FF 0%, #99CCFF 100%);
+            color: #333;
+        }
+
+        .process-step.step3 {
+            background: linear-gradient(135deg, #D9B3FF 0%, #CC99FF 100%);
+            color: white;
+        }
+
+        .process-step.step4 {
+            background: linear-gradient(135deg, #B3FFB3 0%, #99FF99 100%);
+            color: #333;
+        }
+
+        .process-step.step5 {
+            background: linear-gradient(135deg, #FFEB99 0%, #FFE080 100%);
+            color: #333;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .step-title {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .arrow {
+            color: white;
+            font-size: 28px;
+            margin: 0 -8px;
+            flex: 0 0 auto;
+        }
+
+        body.light-mode .arrow {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            .process-diagram {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: -8px 0;
+            }
+
+            .process-step {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .nav-menu {
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .content h2 {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .process-step {
+                min-width: 140px;
+                padding: 15px;
+            }
+
+            .step-title {
+                font-size: 14px;
+            }
+
+            .step-desc {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>업무 프로세스</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 다크 모드</button>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-item" data-page="dashboard.html">대시보드</a>
+            <a href="meeting-result.html" class="nav-item" data-page="meeting-result.html">회의록</a>
+            <a href="chart.html" class="nav-item" data-page="chart.html">매출현황</a>
+            <a href="process.html" class="nav-item" data-page="process.html">업무프로세스</a>
+            <a href="report.html" class="nav-item" data-page="report.html">사이트분석</a>
+        </nav>
+
+        <div class="content">
+            <h2>콘텐츠 마케팅 프로세스</h2>
+            <div class="process-diagram">
+                <div class="process-step step1">
+                    <div class="step-number">1</div>
+                    <div class="step-title">기획</div>
+                    <div class="step-desc">기획 및 전략</div>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="process-step step2">
+                    <div class="step-number">2</div>
+                    <div class="step-title">제작</div>
+                    <div class="step-desc">콘텐츠 제작</div>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="process-step step3">
+                    <div class="step-number">3</div>
+                    <div class="step-title">검토</div>
+                    <div class="step-desc">콘텐츠 품질 관리</div>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="process-step step4">
+                    <div class="step-number">4</div>
+                    <div class="step-title">배포</div>
+                    <div class="step-desc">채널 발행</div>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="process-step step5">
+                    <div class="step-number">5</div>
+                    <div class="step-title">분석</div>
+                    <div class="step-desc">성능</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const isDarkMode = document.body.classList.toggle('light-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = isDarkMode ? '🌙 라이트 모드' : '🌙 다크 모드';
+            localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.querySelector('.theme-toggle').textContent = '🌙 라이트 모드';
+            }
+        }
+
+        function activateNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'process.html';
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('data-page');
+                if (currentPage === '' || currentPage === '/' || currentPage === 'process.html') {
+                    if (itemPage === 'process.html') {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                } else if (itemPage === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        initTheme();
+        activateNavItem();
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<svg viewBox="0 0 800 200" width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .step-box {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+
+      .step-text {
+        fill: #333;
+      }
+
+      .step-number {
+        fill: #666;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .arrow {
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .arrow-head {
+        fill: #999;
+      }
+    </style>
+
+    <!-- 화살표 마커 -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" class="arrow-head" />
+    </marker>
+  </defs>
+
+  <!-- 배경 -->
+  <rect width="800" height="200" fill="#fafafa" rx="8" />
+
+  <!-- 단계 1: 기획 -->
+  <rect x="30" y="50" width="120" height="100" rx="12" fill="#FFE8F0" stroke="#FFB6D9" stroke-width="2" />
+  <text x="90" y="85" class="step-text step-box">기획</text>
+  <text x="90" y="105" class="step-number">기획 및 전략</text>
+
+  <!-- 화살표 1 -->
+  <line x1="160" y1="100" x2="190" y2="100" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- 단계 2: 제작 -->
+  <rect x="210" y="50" width="120" height="100" rx="12" fill="#E0F2FE" stroke="#BFDBFE" stroke-width="2" />
+  <text x="270" y="85" class="step-text step-box">제작</text>
+  <text x="270" y="105" class="step-number">콘텐츠 제작</text>
+
+  <!-- 화살표 2 -->
+  <line x1="340" y1="100" x2="370" y2="100" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- 단계 3: 검토 -->
+  <rect x="390" y="50" width="120" height="100" rx="12" fill="#F3E8FF" stroke="#DCC9E8" stroke-width="2" />
+  <text x="450" y="85" class="step-text step-box">검토</text>
+  <text x="450" y="105" class="step-number">품질 관리</text>
+
+  <!-- 화살표 3 -->
+  <line x1="520" y1="100" x2="550" y2="100" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- 단계 4: 배포 -->
+  <rect x="570" y="50" width="120" height="100" rx="12" fill="#DCFCE7" stroke="#A1E4CB" stroke-width="2" />
+  <text x="630" y="85" class="step-text step-box">배포</text>
+  <text x="630" y="105" class="step-number">채널 발행</text>
+
+  <!-- 화살표 4 -->
+  <line x1="700" y1="100" x2="730" y2="100" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- 단계 5: 분석 -->
+  <rect x="750" y="50" width="20" height="100" rx="12" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2" opacity="0" />
+
+  <!-- 단계 5: 분석 (수정) -->
+  <g>
+    <!-- 배경 -->
+    <rect x="730" y="50" width="40" height="100" rx="12" fill="white" />
+
+    <!-- 실제 분석 박스 -->
+    <rect x="720" y="40" width="140" height="120" rx="12" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2" />
+    <text x="790" y="85" class="step-text step-box">분석</text>
+    <text x="790" y="105" class="step-number">성과 측정</text>
+  </g>
+
+  <!-- 프로세스 제목 (옵션) -->
+  <text x="400" y="25" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; font-size: 12px; fill: #666; text-anchor: middle;">
+    콘텐츠 마케팅 프로세스
+  </text>
+</svg>
